@@ -100,7 +100,8 @@ rbind(c(beta0, beta1), coef(lm(x ~ y)))
 yc <- y - mean(y)
 xc <- x - mean(x)
 beta1 <- sum(yc * xc) / sum(xc ^ 2)
-c(beta1, coef(lm(y ~ x))[2])
+c(beta1, coef(lm(y ~ x))[2]) ### the second element of the coef vector is the slope
+lm(yc ~ xc -1) ### another way to do regression through the origin
 ```
 
 ---
