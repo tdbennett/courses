@@ -186,6 +186,7 @@ of the points to the line
 * Use R studio's  manipulate function to experiment
 * Subtract the means so that the origin is the mean of the parent
 and children's heights
+    * substracting the mean from each puts the fit in the middle of the data, centers the data
 
 ---
 ```{r, echo = TRUE, eval = FALSE}
@@ -213,7 +214,8 @@ manipulate(myPlot(beta), beta = slider(0.6, 1.2, step = 0.02))
 ## The solution 
 ### In the next few lectures we'll talk about why this is the solution
 ```{r}
-lm(I(child - mean(child))~ I(parent - mean(parent)) - 1, data = galton)
+lm(I(child - mean(child))~ I(parent - mean(parent)) - 1, data = galton)  
+## - 1 because regression through the origin, lose the intercept
 ```
 
 ---
