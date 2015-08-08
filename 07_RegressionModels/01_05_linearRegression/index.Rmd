@@ -122,6 +122,7 @@ g
 ```{r}
 fit <- lm(price ~ carat, data = diamond)
 coef(fit)
+summary(fit)
 ```
 
 * We estimate an expected `r round(coef(fit)[2], 2)` (SIN) dollar increase in price for every carat increase in mass of diamond.
@@ -131,8 +132,10 @@ coef(fit)
 ---
 ## Getting a more interpretable intercept
 ```{r, echo = TRUE}
-fit2 <- lm(price ~ I(carat - mean(carat)), data = diamond)
-coef(fit2)
+fit2 <- lm(price ~ I(carat - mean(carat)), data = diamond) ## mean-center X
+     ## I function Identity, if you want arithmetic statements inside lm calls
+coef(fit2)   ### same slope, intercept is now price for average diamond
+summary(fit2)
 ```
 
 Thus $`r round(coef(fit2)[1], 1)` is the expected price for 
@@ -146,16 +149,17 @@ the average sized diamond of the data (`r mean(diamond$carat)` carats).
   * We expect  a `r round(coef(fit)[2], 2) / 10` (SIN) dollar   change in price for every 1/10th of a carat increase in mass of diamond.
 * Showing that it's the same if we rescale the Xs and refit
 ```{r, echo = TRUE}
-fit3 <- lm(price ~ I(carat * 10), data = diamond)
+fit3 <- lm(price ~ I(carat * 10), data = diamond)  ## per 1/10 carat  ## see slides above
 coef(fit3)
 ```
 
 ---
 ## Predicting the price of a diamond
 ```{r, echo = TRUE}
-newx <- c(0.16, 0.27, 0.34)
+newx <- c(0.16, 0.27, 0.34)  ### carat sizes of new diamonds
 coef(fit)[1] + coef(fit)[2] * newx
-predict(fit, newdata = data.frame(carat = newx))
+predict(fit, newdata = data.frame(carat = newx))  ## useful call, scales up to complex models
+predict(fit)  ## gives the y^hat values
 ```
 
 ---
