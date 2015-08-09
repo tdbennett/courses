@@ -211,7 +211,7 @@ the average squared residual.
 y <- diamond$price; x <- diamond$carat; n <- length(y)
 fit <- lm(y ~ x)
 summary(fit)$sigma
-sqrt(sum(resid(fit)^2) / (n - 2))
+sqrt(sum(resid(fit)^2) / (n - 2))  ## manual calc of sigma
 ```
 
 ---
