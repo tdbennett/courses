@@ -67,7 +67,7 @@ follows a $t$ distribution with $n-2$ degrees of freedom and a normal distributi
 hypothesis tests.
 
 ---
-## Example diamond data set
+## Example diamond data set - manual CI calcs
 ```{r}
 library(UsingR); data(diamond)
 y <- diamond$price; x <- diamond$carat; n <- length(y)
@@ -92,7 +92,7 @@ rownames(coefTable) <- c("(Intercept)", "x")
 ```{r}
 coefTable
 fit <- lm(y ~ x); 
-summary(fit)$coefficients
+summary(fit)$coefficients  ### same table
 ```
 
 ---
@@ -123,12 +123,12 @@ $$
 
 
 ---
-## Plotting the prediction intervals
+## Plotting the prediction intervals - they are different from CI's for y
 ```{r, fig.height=5, fig.width==5, echo = FALSE, results='hide'}
 library(ggplot2)
 newx = data.frame(x = seq(min(x), max(x), length = 100))
-p1 = data.frame(predict(fit, newdata= newx,interval = ("confidence")))
-p2 = data.frame(predict(fit, newdata = newx,interval = ("prediction")))
+p1 = data.frame(predict(fit, newdata= newx,interval = ("confidence"))) ## confidence in regression line - very narrow
+p2 = data.frame(predict(fit, newdata = newx,interval = ("prediction"))) ## what I think of as a CI
 p1$interval = "confidence"
 p2$interval = "prediction"
 p1$x = newx$x
