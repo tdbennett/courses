@@ -128,7 +128,7 @@ $$
 library(ggplot2)
 newx = data.frame(x = seq(min(x), max(x), length = 100))
 p1 = data.frame(predict(fit, newdata= newx,interval = ("confidence"))) ## confidence in regression line - very narrow
-p2 = data.frame(predict(fit, newdata = newx,interval = ("prediction"))) ## what I think of as a CI
+p2 = data.frame(predict(fit, newdata = newx,interval = ("prediction"))) ## what I think of as a CI, CI of est x at a new y
 p1$interval = "confidence"
 p2$interval = "prediction"
 p1$x = newx$x
@@ -146,11 +146,11 @@ g
 ---
 ## Discussion
 * Both intervals have varying widths.
-  * Least width at the mean of the Xs.
+  * Both have least width at the mean of the Xs.
 * We are quite confident in the regression line, so that 
   interval is very narrow.
   * If we knew $\beta_0$ and $\beta_1$ this interval would have zero width.
-* The prediction interval must incorporate the variabilibity
+* The prediction interval must incorporate the variability
   in the data around the line.
   * Even if we knew $\beta_0$ and $\beta_1$ this interval would still have width.
 
