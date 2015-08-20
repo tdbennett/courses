@@ -47,7 +47,10 @@ All variables but Fertility give proportions of the population.
 ---
 
 ```{r, fig.height=6, fig.width=10, echo = FALSE}
-require(datasets); data(swiss); require(GGally); require(ggplot2)
+require(datasets)
+data(swiss)
+require(GGally)   ### extension to ggplot2. makes a ggplot version of the pairs plot
+require(ggplot2)
 g = ggpairs(swiss, lower = list(continuous = "smooth"),params = c(method = "loess"))
 g
 ```
@@ -93,7 +96,7 @@ g
 ```{r, echo = FALSE, fig.height=5, fig.width=10, results = 'show'}
 g2 = ggplot(dat, aes(y = ey, x = ex1, colour = x2))  
 g2 = g2 + geom_point(colour="grey50", size = 5) + geom_smooth(method = lm, se = FALSE, colour = "black") + geom_point(size = 4) 
-g2
+g2  ### residual plot
 ```
 
 ---
@@ -107,7 +110,8 @@ g2
 ## What if we include an unnecessary variable?
 z adds no new linear information, since it's a linear
 combination of variables already included. R just drops 
-terms that are linear combinations of other terms.
+terms that are linear combinations of other terms. It will show `NA` for
+the coefficient for that variable.
 ```{r, echo = TRUE}
 z <- swiss$Agriculture + swiss$Education
 lm(Fertility ~ . + z, data = swiss)
