@@ -32,7 +32,7 @@ runif(1)
 ## Consider the following simulated data
 Code for the first plot, rest omitted
 (See the git repo for the rest of the code.)
-```
+```{r extracode}
 n <- 100; t <- rep(c(0, 1), c(n/2, n/2)); x <- c(runif(n/2), runif(n/2));
 beta0 <- 0; beta1 <- 2; tau <- 1; sigma <- .2
 y <- beta0 + x * beta1 + t * tau + rnorm(n, sd = sigma)
@@ -46,7 +46,7 @@ abline(coef(fit)[1] + coef(fit)[3], coef(fit)[2], lwd = 3)
 points(x[1 : (n/2)], y[1 : (n/2)], pch = 21, col = "black", bg = "lightblue", cex = 2)
 points(x[(n/2 + 1) : n], y[(n/2 + 1) : n], pch = 21, col = "black", bg = "salmon", cex = 2)
 ```
-
+horizontal lines from the above show marginal effect of treatment vs control without considering X, the confounder
 
 ---
 ## Simulation 1
@@ -122,6 +122,8 @@ abline(coef(fit)[1] + coef(fit)[3], coef(fit)[2], lwd = 3)
 points(x[1 : (n/2)], y[1 : (n/2)], pch = 21, col = "black", bg = "lightblue", cex = 2)
 points(x[(n/2 + 1) : n], y[(n/2 + 1) : n], pch = 21, col = "black", bg = "salmon", cex = 2)
 ```
+this figure shows Simpson's paradox - effect reverses itself with the inclusion of another variable
+
 
 ---
 ## Discussion
