@@ -55,7 +55,7 @@ In our context
   * This is why we randomize treatments, it attempts to uncorrelate our treatment indicator with variables that we don't have to put in the model. 
   * (If there's too many unobserved confounding variables, even randomization won't help you.)
 * Including variables that we shouldn't have increases standard errors of the regression variables.
-  * Actually, including any new variables increasese (actual, not estimated) standard errors of other regressors. So we don't want to idly throw variables into the model.
+  * Actually, including any new variables increases (actual, not estimated) standard errors of other regressors. So we don't want to idly throw variables into the model.
 * The model must tend toward perfect fit as the number of non-redundant regressors approaches $n$.
 * $R^2$ increases monotonically as more regressors are included.
 * The SSE decreases monotonically as more regressors are included.
@@ -81,7 +81,9 @@ abline(h = 1)
 ## Variance inflation
 ```{r, echo = TRUE}
 n <- 100; nosim <- 1000
-x1 <- rnorm(n); x2 <- rnorm(n); x3 <- rnorm(n); 
+x1 <- rnorm(n)   ### unrelated variables
+x2 <- rnorm(n)
+x3 <- rnorm(n)
 betas <- sapply(1 : nosim, function(i){
   y <- x1 + rnorm(n, sd = .3)
   c(coef(lm(y ~ x1))[2], 
@@ -94,9 +96,11 @@ round(apply(betas, 1, sd), 5)
 ---
 ## Variance inflation
 ```{r, echo = TRUE}
-n <- 100; nosim <- 1000
-x1 <- rnorm(n); x2 <- x1/sqrt(2) + rnorm(n) /sqrt(2)
-x3 <- x1 * 0.95 + rnorm(n) * sqrt(1 - 0.95^2); 
+n <- 100
+nosim <- 1000
+x1 <- rnorm(n)
+x2 <- x1/sqrt(2) + rnorm(n) /sqrt(2)   ### x2 depends on x1
+x3 <- x1 * 0.95 + rnorm(n) * sqrt(1 - 0.95^2);  ### x3 depends on x1
 betas <- sapply(1 : nosim, function(i){
   y <- x1 + rnorm(n, sd = .3)
   c(coef(lm(y ~ x1))[2], 
