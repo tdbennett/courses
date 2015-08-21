@@ -148,7 +148,10 @@ where each $X_{i1}$ is binary so that it is a 1 if measurement $i$ is in a group
 ---
 ## Insect Sprays
 ```{r, echo = FALSE, fig.height=5, fig.width=5}
-require(datasets);data(InsectSprays); require(stats); require(ggplot2)
+require(datasets)
+data(InsectSprays)
+require(stats)
+require(ggplot2)
 g = ggplot(data = InsectSprays, aes(y = count, x = spray, fill  = spray))
 g = g + geom_violin(colour = "black", size = 2)
 g = g + xlab("Type of spray") + ylab("Insect count")
@@ -170,6 +173,8 @@ summary(lm(count ~
              I(1 * (spray == 'D')) + I(1 * (spray == 'E')) +
              I(1 * (spray == 'F'))
            , data = InsectSprays))$coef
+### `I` means to do the operation within the lm.
+### 1 * ... changes it from Boolean to numeric
 ```
 
 ---
@@ -186,13 +191,14 @@ summary(lm(count ~
 ```{r, echo= TRUE}
 summary(lm(count ~ spray - 1, data = InsectSprays))$coef
 library(dplyr)
-summarise(group_by(InsectSprays, spray), mn = mean(count))
+summarise(group_by(InsectSprays, spray), mn = mean(count))  ### same numbers as the 
+     ## no intercept lm, but the inference is different (vs 0, not vs ref group)
 ```
 
 ---
 ## Reordering the levels
 ```{r}
-spray2 <- relevel(InsectSprays$spray, "C")
+spray2 <- relevel(InsectSprays$spray, "C")    ### define your own reference group
 summary(lm(count ~ spray2, data = InsectSprays))$coef
 ```
 ---
