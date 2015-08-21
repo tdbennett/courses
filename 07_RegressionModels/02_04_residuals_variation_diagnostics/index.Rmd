@@ -75,12 +75,12 @@ Calling a point an outlier is vague.
 ---
 ## Influence measures
 * Do `?influence.measures` to see the full suite of influence measures in stats. The measures include
-  * `rstandard` - standardized residuals, residuals divided by their standard deviations)
+  * `rstandard` - standardized residuals, residuals divided by their standard deviations
   * `rstudent` - standardized residuals, residuals divided by their standard deviations, where the ith data point was deleted in the calculation of the standard deviation for the residual to follow a t distribution
-  * `hatvalues` - measures of leverage
+  * `hatvalues` - measures of leverage (might be useful to catch data entry errors)
   * `dffits` - change in the predicted response when the $i^{th}$ point is deleted in fitting the model.
   * `dfbetas` - change in individual coefficients when the $i^{th}$ point is deleted in fitting the model.
-  * `cooks.distance` - overall change in teh coefficients when the $i^{th}$ point is deleted.
+  * `cooks.distance` - overall change in the coefficients when the $i^{th}$ point is deleted.
   * `resid` - returns the ordinary residuals
   * `resid(fit) / (1 - hatvalues(fit))` where `fit` is the linear model fit returns the PRESS residuals, i.e. the leave one out cross validation residuals - the difference in the response and the predicted response at data point $i$, where it was not included in the model fitting.
 
@@ -100,7 +100,8 @@ Calling a point an outlier is vague.
 ---
 ## Case 1
 ```{r, fig.height=5, fig.width=5, echo=FALSE}
-x <- c(10, rnorm(n)); y <- c(10, c(rnorm(n)))
+x <- c(10, rnorm(n))  ### random uncorrelated data plus one at 10,10 - not on the regression line
+y <- c(10, c(rnorm(n)))
 plot(x, y, frame = FALSE, cex = 2, pch = 21, bg = "lightblue", col = "black")
 abline(lm(y ~ x))            
 ```
@@ -108,7 +109,9 @@ abline(lm(y ~ x))
 ---
 ## The code
 ```
-n <- 100; x <- c(10, rnorm(n)); y <- c(10, c(rnorm(n)))
+n <- 100
+x <- c(10, rnorm(n))
+y <- c(10, c(rnorm(n)))
 plot(x, y, frame = FALSE, cex = 2, pch = 21, bg = "lightblue", col = "black")
 abline(lm(y ~ x))            
 ```
@@ -118,15 +121,17 @@ abline(lm(y ~ x))
 ## Showing a couple of the diagnostic values
 ```{r}
 fit <- lm(y ~ x)
-round(dfbetas(fit)[1 : 10, 2], 3)
+round(dfbetas(fit)[1 : 10, 2], 3) ### the first point, the 10,10 point, has a huge dfbeta and hatvalue relative to the others
 round(hatvalues(fit)[1 : 10], 3)
 ```
 
 ---
 ## Case 2
 ```{r, fig.height=5, fig.width=5, echo=FALSE}
-x <- rnorm(n); y <- x + rnorm(n, sd = .3)
-x <- c(5, x); y <- c(5, y)
+x <- rnorm(n)
+y <- x + rnorm(n, sd = .3)
+x <- c(5, x)  ### outlier is at 5,5 and is on the regression line
+y <- c(5, y)
 plot(x, y, frame = FALSE, cex = 2, pch = 21, bg = "lightblue", col = "black")
 fit2 <- lm(y ~ x)
 abline(fit2)            
@@ -135,8 +140,8 @@ abline(fit2)
 ---
 ## Looking at some of the diagnostics
 ```{r, echo = TRUE}
-round(dfbetas(fit2)[1 : 10, 2], 3)
-round(hatvalues(fit2)[1 : 10], 3)
+round(dfbetas(fit2)[1 : 10, 2], 3)  ### dfbeta still large, but not as large (lower influence)
+round(hatvalues(fit2)[1 : 10], 3)   ### hatvalue still very big - high leverage, even if low influence
 ```
 
 ---
@@ -157,13 +162,16 @@ summary(lm(V1 ~ . -1, data = dat))$coef
 ## Residual plot
 ### P-values significant, O RLY?
 ```{r, fig.height=4, fig.width=4, echo = TRUE}
-fit <- lm(V1 ~ . - 1, data = dat); plot(predict(fit), resid(fit), pch = '.')
+fit <- lm(V1 ~ . - 1, data = dat)
+plot(predict(fit), resid(fit), pch = '.')   ### multivariate model, common to plot residuals vs fitted values, not vs x
 ```
 
 ---
 ## Back to the Swiss data
 ```{r, fig.height = 5, fig.width = 5, echo=FALSE}
-data(swiss); par(mfrow = c(2, 2))
-fit <- lm(Fertility ~ . , data = swiss); plot(fit)
+data(swiss)
+par(mfrow = c(2, 2))
+fit <- lm(Fertility ~ . , data = swiss)
+plot(fit)
 ```
 
