@@ -177,4 +177,8 @@ fit1 <- lm(Fertility ~ Agriculture, data = swiss)
 fit3 <- update(fit, Fertility ~ Agriculture + Examination + Education)
 fit5 <- update(fit, Fertility ~ Agriculture + Examination + Education + Catholic + Infant.Mortality)
 anova(fit1, fit3, fit5)
+
+#### TB this is not from the course - found online
+require(lmtest)
+lrtest(fit1, fit3)
 ```
