@@ -78,7 +78,8 @@ plot(0 : 200, dpois(0 : 200, lambda = 100), type = "h", frame = FALSE)
 ## Poisson distribution
 ### Sort of, showing that the mean and variance are equal
 ```{r}
-x <- 0 : 10000; lambda = 3
+x <- 0 : 10000
+lambda = 3
 mu <- sum(x * dpois(x, lambda = lambda))
 sigmasq <- sum((x - mu)^2 * dpois(x, lambda = lambda))
 c(mu, sigmasq)
@@ -170,7 +171,7 @@ $e_i$ - variation due to everything we didn't measure
 estimate things about geometric means.
 - $e^{\beta_0}$ estimated geometric mean hits on day 0
 - $e^{\beta_1}$ estimated relative increase or decrease in geometric mean hits per day
-- There's a problem with logs with you have zero counts, adding a constant works
+- There's a problem with logs with you have zero counts, adding a constant works - frequently + 1
 ```{r}
 round(exp(coef(lm(I(log(gaData$visits + 1)) ~ gaData$julian))), 5)
 ```
@@ -218,7 +219,8 @@ If $JD_i$ is increased by one unit, $E[NH_i | JD_i, b_0, b_1]$ is multiplied by 
 ```{r poisReg, dependson="linReg",fig.height=4.5,fig.width=4.5, cache=TRUE}
 plot(gaData$julian,gaData$visits,pch=19,col="darkgrey",xlab="Julian",ylab="Visits")
 glm1 <- glm(gaData$visits ~ gaData$julian,family="poisson")
-abline(lm1,col="red",lwd=3); lines(gaData$julian,glm1$fitted,col="blue",lwd=3)
+abline(lm1,col="red",lwd=3)
+lines(gaData$julian,glm1$fitted,col="blue",lwd=3)
 ```
 
 
