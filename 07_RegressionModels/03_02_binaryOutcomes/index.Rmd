@@ -38,6 +38,8 @@ knit_hooks$set(plot = knitr:::hook_plot_html)
   * etc
 * Called binary, Bernoulli or 0/1 outcomes 
 * Collection of exchangeable binary outcomes for the same covariate data are called binomial outcomes.
+TB: Bernoulli outcomes, success Pr changes with i, and may depend on covariates.
+Binomial outcomes, success Pr is constant.
 
 ---
 
