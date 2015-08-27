@@ -79,10 +79,11 @@ lines(x, yhat, col = "red", lwd = 2)
 ## Notes
 * The collection of regressors is called a basis.
   * People have spent **a lot** of time thinking about bases for this kind of problem. So, consider this as just a teaser.
+  * examples of bases: Fourier, wavelet, regression splines
 * Single knot point terms can fit hockey stick like processes.
 * These bases can be used in GLMs as well.
 * An issue with these approaches is the large number of parameters introduced. 
-  * Requires some method of so called regularization.
+  * Requires some method of so-called regularization.
 
 ---
 ## Harmonics using linear models
@@ -111,7 +112,8 @@ lines(c(0, 1 : 8, 9), c(0, coef(fit)^2, 0), type = "l", lwd = 3, col = "red")
 ---
 ```{r, fig.height=5, fig.wdith=5}
 ##(How you would really do it)
-a <- fft(chord); plot(Re(a)^2, type = "l")
+a <- fft(chord)
+plot(Re(a)^2, type = "l")
 ```
 
 
