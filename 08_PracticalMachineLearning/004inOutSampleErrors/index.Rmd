@@ -72,8 +72,8 @@ plot(smallSpam$capitalAve,col=spamLabel)
 
 ## Apply Rule 1 to smallSpam
 
-```{r, dependson="loadData"}
-rule1 <- function(x){
+```{r, dependson="loadData"}  
+rule1 <- function(x){      #### useful!!!
   prediction <- rep(NA,length(x))
   prediction[x > 2.7] <- "spam"
   prediction[x < 2.40] <- "nonspam"
