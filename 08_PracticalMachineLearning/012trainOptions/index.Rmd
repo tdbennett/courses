@@ -35,12 +35,14 @@ knit_hooks$set(plot = knitr:::hook_plot_html)
 ## SPAM Example
 
 ```{r loadPackage,cache=TRUE}
-library(caret); library(kernlab); data(spam)
+library(caret)
+library(kernlab)
+data(spam)
 inTrain <- createDataPartition(y=spam$type,
                               p=0.75, list=FALSE)
 training <- spam[inTrain,]
 testing <- spam[-inTrain,]
-modelFit <- train(type ~.,data=training, method="glm")
+modelFit <- train(type ~ ., data=training, method="glm")
 ```
 
 ---
