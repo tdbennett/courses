@@ -35,7 +35,9 @@ knit_hooks$set(plot = knitr:::hook_plot_html)
 ## SPAM Example: Data splitting
 
 ```{r loadPackage}
-library(caret); library(kernlab); data(spam)
+library(caret)
+library(kernlab)
+data(spam)
 inTrain <- createDataPartition(y=spam$type,
                               p=0.75, list=FALSE)
 training <- spam[inTrain,]
@@ -50,7 +52,7 @@ dim(training)
 ```{r kfold,dependson="loadPackage"}
 set.seed(32323)
 folds <- createFolds(y=spam$type,k=10,
-                             list=TRUE,returnTrain=TRUE)
+                             list=TRUE,returnTrain=TRUE)  
 sapply(folds,length)
 folds[[1]][1:10]
 ```

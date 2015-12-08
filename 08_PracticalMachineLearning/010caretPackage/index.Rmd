@@ -80,7 +80,9 @@ http://www.edii.uclm.es/~useR-2013/Tutorials/kuhn/user_caret_2up.pdf
 ## SPAM Example: Data splitting
 
 ```{r loadPackage}
-library(caret); library(kernlab); data(spam)
+library(caret)
+library(kernlab)
+data(spam)
 inTrain <- createDataPartition(y=spam$type,
                               p=0.75, list=FALSE)
 training <- spam[inTrain,]
@@ -106,7 +108,7 @@ modelFit
 
 ```{r finalModel, dependson="training",cache=TRUE}
 modelFit <- train(type ~.,data=training, method="glm")
-modelFit$finalModel
+modelFit$finalModel  ### gives coefficients
 ```
 
 
@@ -116,7 +118,7 @@ modelFit$finalModel
 
 ```{r predictions, dependson="training",cache=TRUE}
 predictions <- predict(modelFit,newdata=testing)
-predictions
+predictions  ### gives yes/no predictions
 ```
 
 --- 
@@ -124,7 +126,7 @@ predictions
 ## SPAM Example: Confusion Matrix
 
 ```{r confusion, dependson="predictions",cache=TRUE}
-confusionMatrix(predictions,testing$type)
+confusionMatrix(predictions,testing$type)   ### awesome! accuracy, 95% CI of that, etc 
 ```
 
 ---
