@@ -47,7 +47,10 @@ Data from: [ISLR package](http://cran.r-project.org/web/packages/ISLR) from the 
 ## Example: Wage data
 
 ```{r loadData,cache=TRUE}
-library(ISLR); library(ggplot2); library(caret); library(gridExtra);
+library(ISLR)
+library(ggplot2)
+library(caret)
+library(gridExtra)
 data(Wage)
 summary(Wage)
 ```
@@ -63,7 +66,8 @@ inTrain <- createDataPartition(y=Wage$wage,
                               p=0.7, list=FALSE)
 training <- Wage[inTrain,]
 testing <- Wage[-inTrain,]
-dim(training); dim(testing)
+dim(training)
+dim(testing)
 ```
 
 
@@ -138,7 +142,7 @@ p1
 ```{r ,dependson="cut2plot",fig.height=4,fig.width=9}
 p2 <- qplot(cutWage,age, data=training,fill=cutWage,
       geom=c("boxplot","jitter"))
-grid.arrange(p1,p2,ncol=2)
+grid.arrange(p1,p2,ncol=2)  ### two plots side by side
 ```
 
 
@@ -149,7 +153,7 @@ grid.arrange(p1,p2,ncol=2)
 ```{r ,dependson="cut2",fig.height=4,fig.width=9}
 t1 <- table(cutWage,training$jobclass)
 t1
-prop.table(t1,1)
+prop.table(t1,1)   ### row or column proportions
 ```
 
 

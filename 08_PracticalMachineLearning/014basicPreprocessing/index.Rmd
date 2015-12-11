@@ -35,7 +35,9 @@ knit_hooks$set(plot = knitr:::hook_plot_html)
 ## Why preprocess?
 
 ```{r loadPackage,cache=TRUE,fig.height=3.5,fig.width=3.5}
-library(caret); library(kernlab); data(spam)
+library(caret)
+library(kernlab)
+data(spam)
 inTrain <- createDataPartition(y=spam$type,
                               p=0.75, list=FALSE)
 training <- spam[inTrain,]
@@ -49,7 +51,7 @@ hist(training$capitalAve,main="",xlab="ave. capital run length")
 
 ```{r ,dependson="loadPackage",cache=TRUE,fig.height=3.5,fig.width=3.5}
 mean(training$capitalAve)
-sd(training$capitalAve)
+sd(training$capitalAve)  ### skewed and highly variable
 ```
 
 ---
@@ -58,9 +60,9 @@ sd(training$capitalAve)
 
 ```{r ,dependson="loadPackage",cache=TRUE,fig.height=3.5,fig.width=3.5}
 trainCapAve <- training$capitalAve
-trainCapAveS <- (trainCapAve  - mean(trainCapAve))/sd(trainCapAve) 
-mean(trainCapAveS)
-sd(trainCapAveS)
+trainCapAveS <- (trainCapAve  - mean(trainCapAve))/sd(trainCapAve) ### standardize
+mean(trainCapAveS)  ## 0
+sd(trainCapAveS)  ## 1
 ```
 
 ---
@@ -69,9 +71,10 @@ sd(trainCapAveS)
 
 ```{r ,dependson="loadPackage",cache=TRUE,fig.height=3.5,fig.width=3.5}
 testCapAve <- testing$capitalAve
-testCapAveS <- (testCapAve  - mean(trainCapAve))/sd(trainCapAve) 
-mean(testCapAveS)
-sd(testCapAveS)
+testCapAveS <- (testCapAve  - mean(trainCapAve))/sd(trainCapAve) ### when apply to
+     ### test set, have to use train mean and train SD
+mean(testCapAveS)  ## won't be exactly 0
+sd(testCapAveS)  ## won't be exactly 1
 ```
 
 
@@ -80,10 +83,10 @@ sd(testCapAveS)
 ## Standardizing - _preProcess_ function
 
 ```{r preprocess,dependson="loadPackage",cache=TRUE,fig.height=3.5,fig.width=3.5}
-preObj <- preProcess(training[,-58],method=c("center","scale"))
+preObj <- preProcess(training[,-58],method=c("center","scale"))  ### center and scale
 trainCapAveS <- predict(preObj,training[,-58])$capitalAve
-mean(trainCapAveS)
-sd(trainCapAveS)
+mean(trainCapAveS)  ## 0
+sd(trainCapAveS)  ## 1
 ```
 
 
@@ -92,7 +95,7 @@ sd(trainCapAveS)
 ## Standardizing - _preProcess_ function
 
 ```{r ,dependson="preprocess",cache=TRUE,fig.height=3.5,fig.width=3.5}
-testCapAveS <- predict(preObj,testing[,-58])$capitalAve
+testCapAveS <- predict(preObj,testing[,-58])$capitalAve  ## applies pre-processing to      ## test set
 mean(testCapAveS)
 sd(testCapAveS)
 ```
@@ -114,9 +117,12 @@ modelFit
 ## Standardizing - Box-Cox transforms
 
 ```{r ,dependson="loadPackage",cache=TRUE,fig.height=3.5,fig.width=7}
+### Box-Cox transformations try to make continuous data look like normal data
 preObj <- preProcess(training[,-58],method=c("BoxCox"))
 trainCapAveS <- predict(preObj,training[,-58])$capitalAve
-par(mfrow=c(1,2)); hist(trainCapAveS); qqnorm(trainCapAveS)
+par(mfrow=c(1,2))
+hist(trainCapAveS)  ### better, still lots 0's
+qqnorm(trainCapAveS)  ### better, still not straight line
 ```
 
 
