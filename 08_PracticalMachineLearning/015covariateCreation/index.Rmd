@@ -41,7 +41,8 @@ knit_hooks$set(plot = knitr:::hook_plot_html)
 **Level 2: Transforming tidy covariates** 
 
 ```{r spamData,fig.height=4,fig.width=4}
-library(kernlab);data(spam)
+library(kernlab)
+data(spam)
 spam$capitalAveSq <- spam$capitalAve^2
 ```
 
@@ -79,10 +80,13 @@ spam$capitalAveSq <- spam$capitalAve^2
 
 
 ```{r loadData,cache=TRUE}
-library(ISLR); library(caret); data(Wage);
+library(ISLR)
+library(caret)
+data(Wage)
 inTrain <- createDataPartition(y=Wage$wage,
                               p=0.7, list=FALSE)
-training <- Wage[inTrain,]; testing <- Wage[-inTrain,]
+training <- Wage[inTrain,]
+testing <- Wage[-inTrain,]
 ```
 
 
@@ -94,7 +98,7 @@ __Basic idea - convert factor variables to [indicator variables](http://bit.ly/1
 
 ```{r dummyVar,dependson="loadData"}
 table(training$jobclass)
-dummies <- dummyVars(wage ~ jobclass,data=training)
+dummies <- dummyVars(wage ~ jobclass,data=training)   ## strange way to do this
 head(predict(dummies,newdata=training))
 ```
 
@@ -105,7 +109,7 @@ head(predict(dummies,newdata=training))
 ## Removing zero covariates
 
 ```{r ,dependson="dummyVar"}
-nsv <- nearZeroVar(training,saveMetrics=TRUE)
+nsv <- nearZeroVar(training,saveMetrics=TRUE)   ### this is kind like info content?
 nsv
 ```
 
@@ -118,7 +122,7 @@ nsv
 ```{r splines,dependson="dummyVar",cache=TRUE}
 library(splines)
 bsBasis <- bs(training$age,df=3) 
-bsBasis
+bsBasis  ### roughly a polynomial of degree 1,2,3 in the columns
 ```
 
 _See also_: ns(),poly()
@@ -139,7 +143,7 @@ points(training$age,predict(lm1,newdata=training),col="red",pch=19,cex=0.5)
 ## Splines on the test set
 
 ```{r ,dependson="splines",fig.height=4,fig.width=4}
-predict(bsBasis,age=testing$age)
+predict(bsBasis,age=testing$age)   ### use the spline basis built on training set
 ```
 
 
