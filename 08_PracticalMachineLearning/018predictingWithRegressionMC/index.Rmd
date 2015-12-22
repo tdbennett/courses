@@ -47,8 +47,11 @@ Data from: [ISLR package](http://cran.r-project.org/web/packages/ISLR) from the 
 ## Example: Wage data
 
 ```{r loadData,cache=TRUE}
-library(ISLR); library(ggplot2); library(caret);
-data(Wage); Wage <- subset(Wage,select=-c(logwage))
+library(ISLR)
+library(ggplot2)
+library(caret)
+data(Wage)
+Wage <- subset(Wage,select=-c(logwage)) ## removing the outcome
 summary(Wage)
 ```
 
@@ -61,8 +64,10 @@ summary(Wage)
 ```{r trainingTest,dependson="loadData",cache=TRUE}
 inTrain <- createDataPartition(y=Wage$wage,
                               p=0.7, list=FALSE)
-training <- Wage[inTrain,]; testing <- Wage[-inTrain,]
-dim(training); dim(testing)
+training <- Wage[inTrain,]
+testing <- Wage[-inTrain,]
+dim(training)
+dim(testing)
 ```
 
 
@@ -144,7 +149,7 @@ qplot(finMod$fitted,finMod$residuals,colour=race,data=training)
 ## Plot by index
 
 ```{r,dependson="modelFit",fig.height=5,fig.width=5}
-plot(finMod$residuals,pch=19)
+plot(finMod$residuals,pch=19)  ## fitted values vs residuals
 ```
 
 

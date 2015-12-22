@@ -59,7 +59,9 @@ Image Credit/Copyright Wally Pacholka [http://www.astropics.com/](http://www.ast
 ## Example: Old faithful eruptions
 
 ```{r faith}
-library(caret);data(faithful); set.seed(333)
+library(caret)
+data(faithful)
+set.seed(333)
 inTrain <- createDataPartition(y=faithful$waiting,
                               p=0.5, list=FALSE)
 trainFaith <- faithful[inTrain,]; testFaith <- faithful[-inTrain,]
@@ -138,7 +140,7 @@ sqrt(sum((predict(lm1,newdata=testFaith)-testFaith$eruptions)^2))
 pred1 <- predict(lm1,newdata=testFaith,interval="prediction")
 ord <- order(testFaith$waiting)
 plot(testFaith$waiting,testFaith$eruptions,pch=19,col="blue")
-matlines(testFaith$waiting[ord],pred1[ord,],type="l",,col=c(1,2,2),lty = c(1,1,1), lwd=3)
+matlines(testFaith$waiting[ord],pred1[ord,],type="l",col=c(1,2,2),lty = c(1,1,1), lwd=3)
 ```
 
 
