@@ -35,15 +35,17 @@ knit_hooks$set(plot = knitr:::hook_plot_html)
 ## Correlated predictors
 
 ```{r loadPackage,cache=TRUE,fig.height=3.5,fig.width=3.5}
-library(caret); library(kernlab); data(spam)
+library(caret)
+library(kernlab)
+data(spam)
 inTrain <- createDataPartition(y=spam$type,
                               p=0.75, list=FALSE)
 training <- spam[inTrain,]
 testing <- spam[-inTrain,]
 
-M <- abs(cor(training[,-58]))
-diag(M) <- 0
-which(M > 0.8,arr.ind=T)
+M <- abs(cor(training[,-58]))  ### 58th column is the outcome, get correlation  - *** very useful
+diag(M) <- 0  ## var with itself
+which(M > 0.8,arr.ind=T) ### which vars are highly correlated
 ```
 
 ---
@@ -77,9 +79,9 @@ $$ X = 0.71 \times {\rm num 415} + 0.71 \times {\rm num857}$$
 $$ Y = 0.71 \times {\rm num 415} - 0.71 \times {\rm num857}$$
 
 ```{r,dependson="loadPackage",cache=TRUE,fig.height=3.5,fig.width=3.5}
-X <- 0.71*training$num415 + 0.71*training$num857
-Y <- 0.71*training$num415 - 0.71*training$num857
-plot(X,Y)
+X <- 0.71*training$num415 + 0.71*training$num857  ### x is the sum of the 2 vars
+Y <- 0.71*training$num415 - 0.71*training$num857  ### y is the difference of the 2 vars
+plot(X,Y)   ## adding the 2 vars together captures most of the variation
 ```
 
 ---
@@ -89,7 +91,8 @@ plot(X,Y)
 You have multivariate variables $X_1,\ldots,X_n$ so $X_1 = (X_{11},\ldots,X_{1m})$
 
 * Find a new set of multivariate variables that are uncorrelated and explain as much variance as possible.
-* If you put all the variables together in one matrix, find the best matrix created with fewer variables (lower rank) that explains the original data.
+
+* If you put all the variables together in one matrix, find the best matrix created with fewer variables (lower rank) that explains the original data.  TB - fewer vars = lower "rank" mathematically
 
 
 The first goal is <font color="#330066">statistical</font> and the second goal is <font color="#993300">data compression</font>.
@@ -100,7 +103,7 @@ The first goal is <font color="#330066">statistical</font> and the second goal i
 
 __SVD__
 
-If $X$ is a matrix with each variable in a column and each observation in a row then the SVD is a "matrix decomposition"
+If $X$ is a matrix with each variable in a column and each observation in a row then the SVD (singular value decomposition) is a "matrix decomposition"
 
 $$ X = UDV^T$$
 
@@ -108,7 +111,7 @@ where the columns of $U$ are orthogonal (left singular vectors), the columns of 
 
 __PCA__
 
-The principal components are equal to the right singular values if you first scale (subtract the mean, divide by the standard deviation) the variables.
+The principal components are equal to the right singular values if you first scale (subtract the mean, divide by the standard deviation) the variables. TB - PC1 (may be a combination of many vars) explains the most variation in the data, etc.
 
 ---
 
@@ -116,7 +119,7 @@ The principal components are equal to the right singular values if you first sca
 
 ```{r prcomp,dependson="loadPackage",cache=TRUE,fig.height=3.5,fig.width=3.5}
 smallSpam <- spam[,c(34,32)]
-prComp <- prcomp(smallSpam)
+prComp <- prcomp(smallSpam)  ## prcomp is base
 plot(prComp$x[,1],prComp$x[,2])
 ```
 
@@ -134,8 +137,8 @@ prComp$rotation
 ## PCA on SPAM data
 
 ```{r spamPC,dependson="loadPackage",cache=TRUE,fig.height=3.5,fig.width=3.5}
-typeColor <- ((spam$type=="spam")*1 + 1)
-prComp <- prcomp(log10(spam[,-58]+1))
+typeColor <- ((spam$type=="spam")*1 + 1)  ## colors the points spam vs ham
+prComp <- prcomp(log10(spam[,-58]+1))  ## logged and added 1 to make more Gaussian, then prcomp
 plot(prComp$x[,1],prComp$x[,2],col=typeColor,xlab="PC1",ylab="PC2")
 ```
 
@@ -145,8 +148,8 @@ plot(prComp$x[,1],prComp$x[,2],col=typeColor,xlab="PC1",ylab="PC2")
 ## PCA with caret
 
 ```{r ,dependson="spamPC",cache=TRUE,fig.height=3.5,fig.width=3.5}
-preProc <- preProcess(log10(spam[,-58]+1),method="pca",pcaComp=2)
-spamPC <- predict(preProc,log10(spam[,-58]+1))
+preProc <- preProcess(log10(spam[,-58]+1),method="pca",pcaComp=2)  ##pcaComp is the number of pc's you want
+spamPC <- predict(preProc,log10(spam[,-58]+1)) ## passing preProc to predict, predict the PC's?
 plot(spamPC[,1],spamPC[,2],col=typeColor)
 ```
 
@@ -166,7 +169,7 @@ modelFit <- train(training$type ~ .,method="glm",data=trainPC)
 ## Preprocessing with PCA
 
 ```{r ,dependson="pcaCaret",cache=TRUE,fig.height=3.5,fig.width=3.5}
-testPC <- predict(preProc,log10(testing[,-58]+1))
+testPC <- predict(preProc,log10(testing[,-58]+1))  ### pass the PreProc object to predict, on the test data
 confusionMatrix(testing$type,predict(modelFit,testPC))
 ```
 
