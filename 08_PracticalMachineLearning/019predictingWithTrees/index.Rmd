@@ -205,7 +205,7 @@ predict(modFit,newdata=testing)
 ## Notes and further resources
 
 * Classification trees are non-linear models
-  * They use interactions between variables
+  * They use interactions between variables TB - KEY - CAN OVERFIT
   * Data transformations may be less important (monotone transformations)
   * Trees can also be used for regression problems (continuous outcome)
 * Note that there are multiple tree building options
