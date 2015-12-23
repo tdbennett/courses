@@ -77,7 +77,7 @@ testing <- iris[-inTrain,]
 
 ```{r forestIris, dependson="irisData",fig.height=4,fig.width=4,cache=TRUE}
 library(caret)
-modFit <- train(Species~ .,data=training,method="rf",prox=TRUE)
+modFit <- train(Species~ .,data=training,method="rf",prox=TRUE)  ## other source recommends using (x,y,...) rather than ~ (faster)
 modFit
 ```
 
