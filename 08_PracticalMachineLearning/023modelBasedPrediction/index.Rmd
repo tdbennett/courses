@@ -116,6 +116,9 @@ $$\delta_k(x) = x^T \Sigma^{-1} \mu_k - \frac{1}{2}\mu_k \Sigma^{-1}\mu_k + log(
 
 ## Naive Bayes
 
+TB - very useful when have lots of binary or categorical predictors
+     - e.g. text classification
+
 Suppose we have many predictors, we would want to model: $P(Y = k | X_1,\ldots,X_m)$
 
 We could use Bayes Theorem to get:
