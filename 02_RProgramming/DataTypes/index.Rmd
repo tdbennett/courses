@@ -8,7 +8,7 @@ framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
 highlighter : highlight.js  # {highlight.js, prettify, highlight}
 hitheme     : tomorrow      # 
 url:
-  lib: ../../libraries
+  lib: ../../librariesNew
   assets: ../../assets
 widgets     : [mathjax]            # {mathjax, quiz, bootstrap}
 mode        : selfcontained # {standalone, draft}
@@ -200,9 +200,15 @@ NAs introduced by coercion
 > as.logical(x)
 [1] NA NA NA
 > as.complex(x)
+<<<<<<< HEAD
 [1] NA NA NA NA
 Warning message:
 NAs introduced by coercion
+=======
+[1] NA NA NA
+Warning message:
+NAs introduced by coercion 
+>>>>>>> upstream/old
 ```
 
 ---
