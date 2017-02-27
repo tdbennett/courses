@@ -6,3 +6,6 @@
 
 *.db
 *.Rproj
+
+*.md
+*.html
